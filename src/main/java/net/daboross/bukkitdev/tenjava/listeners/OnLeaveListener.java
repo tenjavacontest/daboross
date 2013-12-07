@@ -18,11 +18,19 @@ package net.daboross.bukkitdev.tenjava.listeners;
 
 import lombok.RequiredArgsConstructor;
 import net.daboross.bukkitdev.tenjava.DragonCreator;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 @RequiredArgsConstructor
 public class OnLeaveListener implements Listener {
 
     private final DragonCreator dc;
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onLeave(PlayerQuitEvent evt) {
+        dc.createDragon(evt.getPlayer().getLocation());
+    }
 
 }

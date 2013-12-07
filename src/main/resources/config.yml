@@ -2,3 +2,8 @@ modes:
 #- onjoin
 - onfirstjoin
 #- onleave
+- onplayerkill
+#- onentitykill
+
+## You can uncomment (remove the #) any of the commented options to enable them.
+## You can comment (add a # to the start)  any of the enabled options to disable them.

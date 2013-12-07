@@ -29,7 +29,7 @@ public class TenJavaPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        dc = new DragonCreator();
+        dc = new DragonCreator(this);
         saveDefaultConfig();
         register(dc);
         for (String mode : getConfig().getStringList("modes")) {

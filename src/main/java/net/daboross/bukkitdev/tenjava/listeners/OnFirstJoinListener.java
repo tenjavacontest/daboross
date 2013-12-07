@@ -18,11 +18,20 @@ package net.daboross.bukkitdev.tenjava.listeners;
 
 import lombok.RequiredArgsConstructor;
 import net.daboross.bukkitdev.tenjava.DragonCreator;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 @RequiredArgsConstructor
 public class OnFirstJoinListener implements Listener {
 
     private final DragonCreator dc;
 
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onJoin(PlayerJoinEvent evt) {
+        if (!evt.getPlayer().hasPlayedBefore()) {
+            dc.createDragon(evt.getPlayer().getLocation());
+        }
+    }
 }

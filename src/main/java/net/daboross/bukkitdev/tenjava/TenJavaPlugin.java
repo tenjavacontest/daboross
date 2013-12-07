@@ -16,12 +16,44 @@
  */
 package net.daboross.bukkitdev.tenjava;
 
+import java.util.logging.Level;
+import net.daboross.bukkitdev.tenjava.listeners.OnFirstJoinListener;
+import net.daboross.bukkitdev.tenjava.listeners.OnJoinListener;
+import net.daboross.bukkitdev.tenjava.listeners.OnLeaveListener;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class TenJavaPlugin extends JavaPlugin {
 
+    private DragonCreator dc;
+
     @Override
     public void onEnable() {
+        dc = new DragonCreator();
+        saveDefaultConfig();
+        register(dc);
+        for (String mode : getConfig().getStringList("modes")) {
+            switch (mode) {
+                case "onjoin":
+                    register(new OnJoinListener(dc));
+                    getLogger().log(Level.INFO, "Registered listener OnJoin");
+                    break;
+                case "onfirstjoin":
+                    register(new OnFirstJoinListener(dc));
+                    getLogger().log(Level.INFO, "Registered listener OnFirstJoin");
+                    break;
+                case "onleave":
+                    register(new OnLeaveListener(dc));
+                    getLogger().log(Level.INFO, "Registered listener OnLeave");
+                    break;
+                default:
+                    getLogger().log(Level.WARNING, "Mode ''{0}'' unknown.", mode);
+            }
+        }
+    }
+
+    private void register(Listener l) {
+        getServer().getPluginManager().registerEvents(l, this);
     }
 
     @Override

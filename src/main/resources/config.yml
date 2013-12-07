@@ -1,0 +1,4 @@
+modes:
+#- onjoin
+- onfirstjoin
+#- onleave

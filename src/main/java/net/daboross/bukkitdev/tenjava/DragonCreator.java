@@ -17,8 +17,6 @@
 package net.daboross.bukkitdev.tenjava;
 
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -26,16 +24,20 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
 
 @RequiredArgsConstructor
 public class DragonCreator implements Listener {
 
     private final HashSet<Integer> dragons = new HashSet<>();
+    private final DragonDirectionNMS ddnms = new DragonDirectionNMS();
     private final Plugin plugin;
 
     public void createDragon(Location l) {
-        //l = l.clone().add(l.getDirection().multiply(5))
-        LivingEntity i = (LivingEntity) l.getWorld().spawnEntity(l, EntityType.ENDER_DRAGON);
+        Vector direction = l.getDirection().multiply(5);
+        Location from = l.clone().add(l.getDirection().multiply(5));
+        LivingEntity i = (LivingEntity) l.getWorld().spawnEntity(from, EntityType.ENDER_DRAGON);
+        ddnms.direct(i, direction.multiply(-0.25));
         dragons.add(i.getEntityId());
         plugin.getServer().getScheduler().runTaskLater(plugin, new DragonRemoveClass(i), 20l);
     }

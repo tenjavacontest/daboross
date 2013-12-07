@@ -2,12 +2,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.daboross.bukkitdev</groupId>
-    <artifactId>ten-java</artifactId>
+    <artifactId>dragon-join</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>TenJava</name>
-    <description>Entity contest plugin</description>
+    <name>DragonJoin</name>
+    <description>Dragon Join contest plugin</description>
     <url>https://github.com/tenjavacontest/daboross</url>
     <inceptionYear>2013</inceptionYear>
     <licenses>

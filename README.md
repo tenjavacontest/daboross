@@ -1,7 +1,9 @@
-10Java
+10Java-DragonJoin
 ------
 
-10Java project. Purpose unknown as of yet.
+10Java project.
 
+Dragon Join - Creates ender dragons on join / leave / first join.
+Very configurable!
 
-[CI / dev builds](http://ci.nlmc.pw:8111/viewLog.html?buildId=lastSuccessful&buildTypeId=TenJava_TenJavaMainBuild&tab=artifacts&guest=1)
+[Development builds](http://ci.nlmc.pw:8111/viewLog.html?buildId=lastSuccessful&buildTypeId=TenJava_TenJavaMainBuild&tab=artifacts&guest=1)

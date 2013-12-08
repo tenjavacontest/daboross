@@ -24,22 +24,22 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 @RequiredArgsConstructor
 public class DragonCreator implements Listener {
 
     private final HashSet<Integer> dragons = new HashSet<>();
-    private final DragonDirectionNMS ddnms = new DragonDirectionNMS();
     private final Plugin plugin;
 
-    public void createDragon(Location l) {
-        Vector direction = l.getDirection().multiply(5);
-        Location from = l.clone().add(l.getDirection().multiply(5));
-        LivingEntity i = (LivingEntity) l.getWorld().spawnEntity(from, EntityType.ENDER_DRAGON);
-        ddnms.direct(i, direction.multiply(-0.25));
+    public void createDragon(Location target) {
+        Vector direction = target.getDirection().multiply(5);
+        Location from = target.clone().add(target.getDirection().multiply(5));
+        LivingEntity i = (LivingEntity) target.getWorld().spawnEntity(from, EntityType.ENDER_DRAGON);
         dragons.add(i.getEntityId());
-        plugin.getServer().getScheduler().runTaskLater(plugin, new DragonRemoveClass(i), 20l);
+        DragonRun run = new DragonRun(i, direction.clone().multiply(-0.01), target);
+        run.task = plugin.getServer().getScheduler().runTaskTimer(plugin, new DragonRun(i, direction.clone().multiply(-0.01), target), 1, 1);
     }
 
     public void onDamage(EntityDamageByEntityEvent evt) {
@@ -49,14 +49,27 @@ public class DragonCreator implements Listener {
     }
 
     @RequiredArgsConstructor
-    private class DragonRemoveClass implements Runnable {
+    private class DragonRun implements Runnable {
 
-        private final LivingEntity i;
+        private final LivingEntity dragon;
+        private final Vector direction;
+        private final Location target;
+        private BukkitTask task;
 
         @Override
         public void run() {
-            dragons.remove(i.getEntityId());
-            i.damage(i.getMaxHealth());
+            dragon.teleport(dragon.getLocation().add(direction));
+            if (isWithin(dragon.getLocation(), target, 1)) {
+                dragons.remove(dragon.getEntityId());
+                dragon.damage(dragon.getMaxHealth());
+                task.cancel();
+            }
         }
+    }
+
+    private boolean isWithin(Location l1, Location l2, double diff) {
+        return (l1.getX() + diff > l2.getX() || l2.getX() + diff > l1.getX())
+                && (l1.getY() + diff > l2.getY() || l2.getY() + diff > l1.getY())
+                && (l1.getZ() + diff > l2.getZ() || l2.getZ() + diff > l1.getZ());
     }
 }
